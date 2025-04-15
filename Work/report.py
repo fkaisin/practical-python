@@ -45,19 +45,30 @@ def read_prices(file_name):
 
     return prices
 
-# # Calcul du gain total
+def make_report(portfolio, prices):
 
-# file = 'Work/Data/portfolio.csv'
-# portfolio = read_portfolio(file)
+    report = []
+    for s in portfolio:
+        current_price = prices[s['name']]
+        change = current_price - s['price']
+        report.append((s['name'], s['shares'], current_price, change))
+    return report
 
-# file = 'Work/Data/prices.csv'
-# prices = read_prices(file)
 
-# total_gains = 0.0
+file = 'Work/Data/portfolio.csv'
+portfolio = read_portfolio(file)
 
-# for s in portfolio:
-#     gain = s['shares'] * (prices[s['name']] - s['price'])
-#     total_gains += gain
-#     print(f'Gains sur {s['name']} : {round(gain,2)}')
+file = 'Work/Data/prices.csv'
+prices = read_prices(file)
 
-# print('Gain total : ', total_gains)
+report = make_report(portfolio, prices)
+
+headers = ('Name', 'Shares', 'Price', 'Change')
+print(f'%10s %10s %10s %10s' % headers)
+print(f'{"":->10}', f'{"":->10}', f'{"":->10}', f'{"":->10}')
+
+for n, s, p, c in report:
+# for r in report:
+    # string = f'%10s %10d %10.2f %10.2f' % r
+    string = f'{n:>10s} {s:>10d} {'$' + str(p):>10s} {c:>10.2f}'
+    print(string)
