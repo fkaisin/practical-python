@@ -13,12 +13,17 @@ def read_portfolio(file_name):
         with open(file_name, 'rt') as f:
             rows = csv.reader(f)
             headers = next(rows)
-            for row in rows:
+            for n, row in enumerate(rows):
                 try:
-                    holding = {'name':row[0], 'shares':int(row[1]), 'price':float(row[2])}
-                    portfolio.append(holding)
+                    record = dict(zip(headers, row))
+                    record['name'] = str(record['name'])
+                    record['shares'] = int(record['shares'])
+                    record['price'] = float(record['price'])
+                    portfolio.append(record)
                 except IndexError:
-                    pass
+                    print(f'Row {n}: Bad row: {row}')
+                except ValueError:
+                    print(f'Row {n}: Bad row: {row}')
             
     except FileNotFoundError:
         print('File not found.')
@@ -55,7 +60,7 @@ def make_report(portfolio, prices):
     return report
 
 
-file = 'Work/Data/portfolio.csv'
+file = 'Work/Data/portfoliodate.csv'
 portfolio = read_portfolio(file)
 
 file = 'Work/Data/prices.csv'
