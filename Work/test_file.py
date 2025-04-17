@@ -1,30 +1,15 @@
-from pprint import pprint
 import csv
-from collections import Counter, defaultdict, deque
+from pprint import pprint
 
-portfolio = [
-    ('GOOG', 100, 490.1),
-    ('IBM', 50, 91.1),
-    ('CAT', 150, 83.44),
-    ('IBM', 100, 45.23),
-    ('GOOG', 75, 572.45),
-    ('AA', 50, 23.15)
-]
-
-total_shares = Counter()
-for name, shares, price in portfolio:
-    total_shares[name] += shares
-
-holdings = defaultdict(list)
-for name, shares, price in portfolio:
-    holdings[name].append((shares,price))
-
-history = deque(maxlen=3)
-with open('Work/Data/portfolio.csv') as f:
+with open('Work/Data/portfoliodate.csv','rt') as f:
     rows = csv.reader(f)
-    for line in rows:
-        history.append(line)
+    headers = next(rows)
+    select = ['name', 'shares', 'price']
+    indices = [headers.index(colname) for colname in select]
 
-pprint(history)
+    row = next(rows)
+    # record = {colname: row[index] for colname, index in zip(select, indices)}
 
-# REPRENDRE AUX EXERCICES DU CHAPITRE 2.5
+    portfolio = [{colname: row[index] for colname, index in zip(select, indices)} for row in rows]
+
+pprint(portfolio)

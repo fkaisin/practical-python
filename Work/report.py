@@ -60,20 +60,21 @@ def make_report(portfolio, prices):
     return report
 
 
-file = 'Work/Data/portfoliodate.csv'
+file = 'Work/Data/portfolio.csv'
 portfolio = read_portfolio(file)
 
 file = 'Work/Data/prices.csv'
 prices = read_prices(file)
 
-report = make_report(portfolio, prices)
+# report = make_report(portfolio, prices)
 
-headers = ('Name', 'Shares', 'Price', 'Change')
-print(f'%10s %10s %10s %10s' % headers)
-print(f'{"":->10}', f'{"":->10}', f'{"":->10}', f'{"":->10}')
+# headers = ('Name', 'Shares', 'Price', 'Change')
+# print(f'%10s %10s %10s %10s' % headers)
+# print(f'{"":->10}', f'{"":->10}', f'{"":->10}', f'{"":->10}')
 
-for n, s, p, c in report:
-# for r in report:
-    # string = f'%10s %10d %10.2f %10.2f' % r
-    string = f'{n:>10s} {s:>10d} {'$' + str(p):>10s} {c:>10.2f}'
-    print(string)
+# for n, s, p, c in report:
+# # for r in report:
+#     # string = f'%10s %10d %10.2f %10.2f' % r
+#     string = f'{n:>10s} {s:>10d} {'$' + str(p):>10s} {c:>10.2f}'
+#     print(string)
+
