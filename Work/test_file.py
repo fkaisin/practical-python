@@ -1,15 +1,26 @@
 import csv
 from pprint import pprint
 
-with open('Work/Data/portfoliodate.csv','rt') as f:
+# with open('Work/Data/portfoliodate.csv','rt') as f:
+    # rows = csv.reader(f)
+    # headers = next(rows)
+    # select = ['name', 'shares', 'price', 'date']
+    # types = [str, int, float, tuple]
+    # indices = [headers.index(colname) for colname in select]
+    
+    # portfolio = [{name: func(val) for name, func, val in zip(select, types, [row[i] for i in indices])} for row in rows]
+
+
+# pprint(portfolio)
+
+def parse_date(date_str):
+    return tuple(map(int, date_str.split('/')))
+
+with open('Work/Data/dowstocks.csv','rt') as f:
     rows = csv.reader(f)
     headers = next(rows)
-    select = ['name', 'shares', 'price']
-    indices = [headers.index(colname) for colname in select]
+    # row = next(rows)
+    types = [str, float, parse_date, str, float, float, float, float, int]
+    converted = [[func(val) for func, val in zip(types, row)] for row in rows]
 
-    row = next(rows)
-    # record = {colname: row[index] for colname, index in zip(select, indices)}
-
-    portfolio = [{colname: row[index] for colname, index in zip(select, indices)} for row in rows]
-
-pprint(portfolio)
+    pprint(converted)

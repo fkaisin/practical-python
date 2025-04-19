@@ -6,7 +6,10 @@ import csv
 from pprint import pprint
 
 def read_portfolio(file_name):
-
+    '''
+    Read a stock portfolio file into a list of dictionaries with keys
+    name, shares, and price.
+    '''
     portfolio = []
 
     try:
@@ -59,22 +62,34 @@ def make_report(portfolio, prices):
         report.append((s['name'], s['shares'], current_price, change))
     return report
 
+def print_report(report):
+    '''
+    Print a report of the stock portfolio.
+    '''
+    headers = ('Name', 'Shares', 'Price', 'Change')
+    print(f'%10s %10s %10s %10s' % headers)
+    print(('-' * 10 + ' ') * len(headers))
+    for r in report:
+        string = f'%10s %10d %10.2f %10.2f' % r
+        print(string)
 
-file = 'Work/Data/portfolio.csv'
-portfolio = read_portfolio(file)
+    ## Pour afficher le prix avec le signe dollars $
+    # for n, s, p, c in report:
+        # string = f'{n:>10s} {s:>10d} {'$' + str(p):>10s} {c:>10.2f}'
+        # print(string)
 
-file = 'Work/Data/prices.csv'
-prices = read_prices(file)
+def portfolio_report(portfolio_file, prices_file):
+    '''
+    Read a stock portfolio file and a prices file, and print a report.
+    '''
+    portfolio = read_portfolio(portfolio_file)
+    prices = read_prices(prices_file)
 
-# report = make_report(portfolio, prices)
+    if portfolio is None or prices is None:
+        print('Error reading files.')
+        return
 
-# headers = ('Name', 'Shares', 'Price', 'Change')
-# print(f'%10s %10s %10s %10s' % headers)
-# print(f'{"":->10}', f'{"":->10}', f'{"":->10}', f'{"":->10}')
+    print_report(make_report(portfolio, prices))
 
-# for n, s, p, c in report:
-# # for r in report:
-#     # string = f'%10s %10d %10.2f %10.2f' % r
-#     string = f'{n:>10s} {s:>10d} {'$' + str(p):>10s} {c:>10.2f}'
-#     print(string)
-
+# portfolio_report('Work/Data/portfolio.csv', 'Work/Data/prices.csv')
+# portfolio_report('Work/Data/portfolio2.csv', 'Work/Data/prices.csv')
