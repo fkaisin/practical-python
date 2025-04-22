@@ -4,6 +4,7 @@
 
 from pprint import pprint
 from fileparse import parse_csv
+import stock
 
 def read_portfolio(file_name):
     '''
@@ -12,8 +13,9 @@ def read_portfolio(file_name):
     '''
     try:
         with open(file_name, 'rt') as f:
-            portfolio = parse_csv(f, select=['name','shares','price'], types=[str, int, float])
-            
+            portdicts = parse_csv(f, select=['name','shares','price'], types=[str, int, float])
+            portfolio = [stock.Stock(s['name'], s['shares'], s['price']) for s in portdicts]
+
     except FileNotFoundError:
         print('File not found.')
         portfolio = None
@@ -36,9 +38,9 @@ def make_report(portfolio, prices):
 
     report = []
     for s in portfolio:
-        current_price = prices[s['name']]
-        change = current_price - s['price']
-        report.append((s['name'], s['shares'], current_price, change))
+        current_price = prices[s.name]
+        change = current_price - s.price
+        report.append((s.name, s.shares, current_price, change))
     return report
 
 def print_report(report):
@@ -51,11 +53,6 @@ def print_report(report):
     for r in report:
         string = f'%10s %10d %10.2f %10.2f' % r
         print(string)
-
-    ## Pour afficher le prix avec le signe dollars $
-    # for n, s, p, c in report:
-        # string = f'{n:>10s} {s:>10d} {'$' + str(p):>10s} {c:>10.2f}'
-        # print(string)
 
 def portfolio_report(portfolio_file, prices_file):
     '''

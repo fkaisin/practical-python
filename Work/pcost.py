@@ -14,8 +14,8 @@ def portfolio_cost(filename = 'Data/portfolio.csv'):
             filename = sys.argv[1]
 
         portfolio = report.read_portfolio(filename)
-        for row in portfolio:
-            total_cost += row['shares'] * row['price']
+        for stock in portfolio:
+            total_cost += stock.shares * stock.price
 
         # total_cost = round(total_cost,2)
         return total_cost
