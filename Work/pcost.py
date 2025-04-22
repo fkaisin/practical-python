@@ -4,6 +4,7 @@
 
 import csv
 import sys
+import report
 
 def portfolio_cost(filename = 'Data/portfolio.csv'):
     try:
@@ -12,17 +13,9 @@ def portfolio_cost(filename = 'Data/portfolio.csv'):
         if len(sys.argv) == 2:
             filename = sys.argv[1]
 
-        with open(filename,'rt') as f:
-            rows = csv.reader(f)
-            headers = next(rows)
-            for n, row in enumerate(rows, start=1):
-                record = dict(zip(headers, row))
-                try:
-                    nshares = int(record['shares'])
-                    price = float(record['price'])
-                    total_cost += nshares * price
-                except ValueError:
-                    print(f'Row {n}: Bad row: {row}')
+        portfolio = report.read_portfolio(filename)
+        for row in portfolio:
+            total_cost += row['shares'] * row['price']
 
         # total_cost = round(total_cost,2)
         return total_cost
@@ -31,6 +24,13 @@ def portfolio_cost(filename = 'Data/portfolio.csv'):
         print('File not found.')
         return 0.0
 
+def main(args):
+    if len(args) != 2:
+        raise SystemExit(f'Usage: {args[0]} ' 'portfile')
+    print('Total cost :', portfolio_cost(args[1]))
 
-file = 'Work/Data/portfoliodate.csv'
-print('Total cost : ', portfolio_cost(file))
+
+if __name__ == '__main__':
+    # import sys
+    # main(sys.argv)
+    print('Total cost :', portfolio_cost('Data/portfolio.csv'))

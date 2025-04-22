@@ -11,4 +11,4 @@ bounce_number = 10
 height = init_height
 for i in range(1,bounce_number+1):
     height = height * 3 / 5
-    print(i,round(height,2)
+    print(i,round(height,2))
