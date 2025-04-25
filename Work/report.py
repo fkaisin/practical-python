@@ -9,8 +9,7 @@ import tableformat
 
 def read_portfolio(file_name):
     '''
-    Read a stock portfolio file into a list of dictionaries with keys
-    name, shares, and price.
+    Read a stock portfolio file into a list of stocks
     '''
     try:
         with open(file_name, 'rt') as f:

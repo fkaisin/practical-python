@@ -9,6 +9,9 @@ class Stock:
 
     def sell(self, amnt):
         self.shares -= amnt
+    
+    def __repr__(self):
+        return f'Stock(\'{self.name}\', {self.shares}, {self.price})'
 
 class MyStock(Stock):
     def __init__(self, name, shares, price, factor):

@@ -1,5 +1,8 @@
 #  tableformat.py
 
+class FormatError(Exception):
+    pass
+
 class TableFormatter:
     def headings(self, headers):
         '''
@@ -21,7 +24,7 @@ class TextTableFormatter(TableFormatter):
         for h in headers:
             print(f'{h:>10s}', end='')
         print()
-        print(('-'*10 + ' ')*len(headers))
+        print(('  ' + '-'*8)*len(headers))
     
     def row(self, rowdata):
         for d in rowdata:
@@ -61,4 +64,11 @@ def create_formatter(fmt: str):
     elif fmt == 'html':
         return HTMLTableFormatter()
     else:
-        raise RuntimeError(f'Unknown format {fmt}')
+        raise FormatError(f'Unknown format {fmt}')
+    
+def print_table(portfolio, headers, formatter):
+    formatter.headings(headers)
+    for stock in portfolio:
+        rows = [str(getattr(stock, header)) for header in headers]
+        formatter.row(rows)
+
