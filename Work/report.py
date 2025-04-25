@@ -5,6 +5,7 @@
 from pprint import pprint
 from fileparse import parse_csv
 import stock
+import tableformat
 
 def read_portfolio(file_name):
     '''
@@ -43,37 +44,41 @@ def make_report(portfolio, prices):
         report.append((s.name, s.shares, current_price, change))
     return report
 
-def print_report(report):
+def print_report(reportdata, formatter):
     '''
-    Print a report of the stock portfolio.
+    Print a nicely formatted table from a list of (name, shares, price, change) tuples.
     '''
-    headers = ('Name', 'Shares', 'Price', 'Change')
-    print(f'%10s %10s %10s %10s' % headers)
-    print(('-' * 10 + ' ') * len(headers))
-    for r in report:
-        string = f'%10s %10d %10.2f %10.2f' % r
-        print(string)
+    formatter.headings(['Name', 'Shares', 'Price', 'Change'])
+    for name, shares, price, change in reportdata:
+        rowdata = [ name, str(shares), f'{price:0.2f}', f'{change:0.2f}' ]
+        formatter.row(rowdata)
 
-def portfolio_report(portfolio_file, prices_file):
+def portfolio_report(portfolio_file, prices_file, fmt='txt'):
     '''
     Read a stock portfolio file and a prices file, and print a report.
     '''
+    # Read data files
     portfolio = read_portfolio(portfolio_file)
     prices = read_prices(prices_file)
-
     if portfolio is None or prices is None:
         print('Error reading files.')
         return
+    
+    # Make the report
+    report = make_report(portfolio, prices)
 
-    print_report(make_report(portfolio, prices))
+    # Print it
+    formatter = tableformat.create_formatter(fmt)
+    print_report(report, formatter)
 
 def main(args):
-    if len(args) != 3:
-        raise SystemExit(f'Usage: {args[0]} ' 'portfile pricefile')
-    portfolio_report(args[1], args[2])
+    if len(args) < 3 or len(args) > 4:
+        raise SystemExit(f'Usage: {args[0]} portfile pricefile format')
+    portfolio_report(args[1], args[2], args[3])
 
 if __name__ == '__main__':
-    portfolio_report('Data/portfolio.csv', 'Data/prices.csv')
+    print(f'{"  RESTART  ":=^50s}')
+    # portfolio_report('Data/portfolio.csv', 'Data/prices.csv', 'txt')
     # portfolio_report('Work/Data/portfolio2.csv', 'Work/Data/prices.csv')
-    # import sys
-    # main(sys.argv)
+    import sys
+    main(sys.argv)
